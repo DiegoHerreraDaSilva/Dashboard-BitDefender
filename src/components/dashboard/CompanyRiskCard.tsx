@@ -21,7 +21,6 @@ const BREAKDOWN_ROWS: Array<{ key: keyof CompanyRiskSummary; label: string }> = 
   { key: "findings", label: "Resultados" },
   { key: "vulnerabilities", label: "Vulnerabilidades" },
   { key: "accountRisks", label: "Riscos da conta" },
-  { key: "industryModifier", label: "Modificador do setor" },
 ];
 
 // "Estado da empresa" from Control Center's Risk Management widget — a

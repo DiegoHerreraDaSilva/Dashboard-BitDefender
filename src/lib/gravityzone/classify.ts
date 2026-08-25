@@ -410,7 +410,6 @@ export interface CompanyRiskSummary {
   findings: number | null; // riskScore.misconfigurations
   vulnerabilities: number | null; // riskScore.appVulnerabilities
   accountRisks: number | null; // riskScore.humanRisks
-  industryModifier: number | null;
 }
 
 function parsePercent(raw: unknown): number | null {
@@ -431,6 +430,5 @@ export function toCompanyRiskSummary(raw: RawRecord): CompanyRiskSummary {
     findings: parsePercent(riskScore.misconfigurations),
     vulnerabilities: parsePercent(riskScore.appVulnerabilities),
     accountRisks: parsePercent(riskScore.humanRisks),
-    industryModifier: parsePercent(riskScore.industryModifier),
   };
 }

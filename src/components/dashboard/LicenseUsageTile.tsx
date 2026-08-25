@@ -72,7 +72,7 @@ export function LicenseUsageTile({ state, now, className }: LicenseUsageTileProp
             {license.used} / {license.total} <span className="text-lg font-normal muted">assentos</span>
           </div>
           <ProgressBar value={license.used!} max={license.total!} tone={tone} />
-          <p className="text-lg muted">
+          <p className="text-2xl muted">
             {license.expiresAt
               ? `Expira em ${DATE_FORMATTER.format(license.expiresAt)}${daysLeft !== null ? ` (${daysLeft} dias)` : ""}`
               : "Data de expiração não disponível"}
