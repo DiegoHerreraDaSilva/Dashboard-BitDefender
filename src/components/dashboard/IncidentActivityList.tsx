@@ -61,7 +61,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               const Icon = isRecurring ? Repeat2 : meta.Icon;
               const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
               return (
-                <li key={entry.id} className="flex items-center justify-between gap-4 text-xl break-inside-avoid mb-3">
+                <li key={entry.id} className="flex items-center justify-between gap-4 text-xl break-inside-avoid mb-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <Icon className="size-4 shrink-0" style={{ color }} aria-hidden />
                     <span className="truncate font-medium">{entry.title}</span>
