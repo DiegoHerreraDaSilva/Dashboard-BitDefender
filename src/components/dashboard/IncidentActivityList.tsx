@@ -31,7 +31,7 @@ const TIME_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
   minute: "2-digit",
 });
 
-const MAX_ROWS_SHOWN = 6;
+const MAX_ROWS_SHOWN = 5;
 
 // One feed instead of two competing lists: every incident in GravityZone's
 // history shows up exactly once, most recent activity first. A repeated
@@ -54,14 +54,14 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
         <p className="text-lg muted">Nenhum incidente no período.</p>
       ) : (
         <>
-          <ul className="columns-2 gap-8">
+          <ul className="flex flex-col gap-3">
             {shown.map((entry) => {
               const isRecurring = entry.count >= 2;
               const meta = SEVERITY_META[entry.severity];
               const Icon = isRecurring ? Repeat2 : meta.Icon;
               const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
               return (
-                <li key={entry.id} className="flex items-center justify-between gap-4 text-2xl break-inside-avoid mb-3">
+                <li key={entry.id} className="flex items-center justify-between gap-4 text-2xl">
                   <div className="flex items-center gap-2 min-w-0">
                     <Icon className="size-5 shrink-0" style={{ color }} aria-hidden />
                     <span className="truncate font-medium">{entry.title}</span>
