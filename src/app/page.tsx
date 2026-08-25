@@ -28,19 +28,19 @@ export default async function DashboardPage() {
     <main className="h-screen overflow-hidden flex flex-col gap-4 p-10">
       <DashboardHeader renderedAt={renderedAt} syncStates={[fleet, incidents, license, company]} />
       <div className="flex flex-col gap-4 flex-1 min-h-0">
-        <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
-          <TotalEndpointsCard state={fleet} className="min-h-0" />
-          <RiskGaugeCard state={fleet} className="min-h-0" />
-          <CompanyRiskCard state={company} className="min-h-0 overflow-hidden" />
+        <div className="flex gap-4 flex-1 min-h-0">
+          <TotalEndpointsCard state={fleet} className="flex-1 min-w-0 min-h-0" />
+          <RiskGaugeCard state={fleet} className="flex-1 min-w-0 min-h-0" />
+          <CompanyRiskCard state={company} className="flex-1 min-w-0 min-h-0 overflow-hidden" />
         </div>
-        <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
-          <FleetHealthBlock state={fleet} className="min-h-0 overflow-hidden" />
-          <LicenseUsageTile state={license} now={renderedAt} className="min-h-0" />
-          <AgentVersionBreakdown state={fleet} className="min-h-0 overflow-hidden" />
+        <div className="flex gap-4 flex-1 min-h-0">
+          <FleetHealthBlock state={fleet} className="flex-1 min-w-0 min-h-0 overflow-hidden" />
+          <LicenseUsageTile state={license} now={renderedAt} className="flex-1 min-w-0 min-h-0" />
+          <AgentVersionBreakdown state={fleet} className="flex-1 min-w-0 min-h-0 overflow-hidden" />
         </div>
-        <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
-          <IncidentActivityList state={incidents} className="col-span-2 min-h-0 overflow-hidden" />
-          <LatestIncidentCard state={incidents} className="min-h-0 overflow-hidden" />
+        <div className="flex gap-4 flex-1 min-h-0">
+          <IncidentActivityList state={incidents} className="flex-[2] min-w-0 min-h-0 overflow-hidden" />
+          <LatestIncidentCard state={incidents} className="flex-1 min-w-0 min-h-0 overflow-hidden" />
         </div>
       </div>
     </main>
