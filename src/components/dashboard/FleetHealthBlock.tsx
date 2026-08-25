@@ -36,7 +36,7 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
             const Icon = row.Icon;
             const pct = managedCount > 0 ? Math.round((row.value / managedCount) * 100) : 0;
             return (
-              <li key={row.label} className="flex flex-col gap-1">
+              <li key={row.label} className="flex flex-col gap-0.5">
                 <div className="flex items-center justify-between text-xl">
                   <span className="flex items-center gap-2 font-medium">
                     <Icon className="size-4 shrink-0" style={{ color: toneColor(row.tone) }} aria-hidden />
