@@ -32,6 +32,14 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
   // whole drawing down so the label has room to breathe above it.
   const topPadding = size * 0.1;
   const height = cy + size * 0.2 + topPadding;
+  // Same problem on the sides: the "0"/"100" label anchor points sit at
+  // radius size*0.535 from center — past the SVG's own left/right edge
+  // (cx ± size/2) even before accounting for the glyph's own width, so
+  // those two labels were clipped clean off. sidePadding widens the canvas
+  // (mirroring topPadding) instead of shrinking the label radius, so the
+  // rim/ticks/arc geometry itself doesn't change size.
+  const sidePadding = size * 0.09;
+  const width = size + sidePadding * 2;
 
   const minorTicks = Array.from({ length: Math.floor(100 / MINOR_STEP) + 1 }, (_, i) => i * MINOR_STEP).filter(
     (v) => v <= 100 && !MAJOR_VALUES.includes(v)
@@ -40,8 +48,8 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
   const arcPath = `M ${cx - arcRadius} ${cy} A ${arcRadius} ${arcRadius} 0 0 1 ${cx + arcRadius} ${cy}`;
 
   return (
-    <svg width={size} height={height} viewBox={`0 0 ${size} ${height}`}>
-      <g transform={`translate(0, ${topPadding})`}>
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+      <g transform={`translate(${sidePadding}, ${topPadding})`}>
       <g stroke="rgba(255,255,255,0.28)" strokeWidth={1.5}>
         {minorTicks.map((v) => {
           const inner = pointAt(cx, cy, tickInner, v);
