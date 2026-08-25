@@ -16,8 +16,14 @@ interface LicenseUsageTileProps {
   className?: string;
 }
 
+// UTC, not America/Sao_Paulo: expiryDate is a calendar date ("license expires
+// on this day"), not an instant — GravityZone's own wire format for it isn't
+// publicly documented, and if it comes back date-only (e.g. "2026-12-31"),
+// JS parses that as UTC midnight. Formatting in BRT (UTC-3) would then roll
+// it back to the previous day. Formatting in UTC always shows the calendar
+// date as sent, whether the field is date-only or a full timestamp.
 const DATE_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
-  timeZone: "America/Sao_Paulo",
+  timeZone: "UTC",
   day: "2-digit",
   month: "2-digit",
   year: "numeric",

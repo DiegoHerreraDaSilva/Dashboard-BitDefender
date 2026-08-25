@@ -1,4 +1,4 @@
-import { ShieldAlert, ShieldCheck, WifiOff } from "lucide-react";
+import { ShieldAlert, ShieldCheck, ShieldQuestion, WifiOff } from "lucide-react";
 import { Card, toneColor, type CardTone } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import type { SnapshotState } from "@/lib/cache";
@@ -21,6 +21,7 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
         { label: "Protegidos", value: summary.protectedCount, tone: "ok", Icon: ShieldCheck },
         { label: "Em risco (malware)", value: summary.atRiskCount, tone: "bad", Icon: ShieldAlert },
         { label: "Offline", value: summary.offlineCount, tone: "warn", Icon: WifiOff },
+        { label: "Sem política aplicada", value: summary.noPolicyCount, tone: "warn", Icon: ShieldQuestion },
       ]
     : [];
 

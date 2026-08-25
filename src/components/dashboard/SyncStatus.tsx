@@ -22,7 +22,8 @@ function oldestFetchedAt(states: SnapshotState<unknown>[]): Date | null {
 // DASHBOARD_REFRESH_SECONDS), so it lags real backend death by at most a
 // couple of reload cycles — an acceptable resolution for a wall display.
 export function SyncStatus({ states, now }: SyncStatusProps) {
-  const neverSynced = states.some((state) => state.status === "error");
+  const neverSyncedCount = states.filter((state) => state.status === "error").length;
+  const neverSynced = neverSyncedCount > 0;
   const oldest = oldestFetchedAt(states);
 
   if (neverSynced && !oldest) {
@@ -43,7 +44,7 @@ export function SyncStatus({ states, now }: SyncStatusProps) {
   const color = tone === "ok" ? "var(--ok)" : tone === "warn" ? "var(--warn)" : "var(--bad)";
   const Icon = tone === "ok" ? CheckCircle2 : AlertTriangle;
   const label = neverSynced
-    ? `Atualizado há ${ageMinutes} min (1 domínio nunca sincronizou)`
+    ? `Atualizado há ${ageMinutes} min (${neverSyncedCount} ${neverSyncedCount === 1 ? "domínio nunca sincronizou" : "domínios nunca sincronizaram"})`
     : `Atualizado há ${ageMinutes} min`;
 
   return (

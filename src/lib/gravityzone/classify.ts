@@ -329,7 +329,7 @@ export function classifyIncidentActivity(rawIncidents: RawRecord[]): IncidentAct
       groups.set(`ungrouped-${ungroupedSeq}`, {
         id: String(item.incidentId ?? `incident-${ungroupedSeq}`),
         title,
-        endpointName: isOrgIncident ? "Vários endpoints" : "Endpoint desconhecido",
+        endpointName: isOrgIncident ? "Vários endpoints" : endpointName ?? "Endpoint desconhecido",
         severity,
         count: 1,
         firstSeen: created,
