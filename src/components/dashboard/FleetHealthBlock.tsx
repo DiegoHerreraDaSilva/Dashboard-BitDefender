@@ -43,8 +43,8 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
                     {row.label}
                   </span>
                   <span className="tabular-nums">
-                    <span className="font-semibold">{row.value}</span>{" "}
-                    <span className="text-base muted">({pct}%)</span>
+                    <span className="text-2xl font-semibold">{row.value}</span>{" "}
+                    <span className="text-lg muted">({pct}%)</span>
                   </span>
                 </div>
                 <ProgressBar value={row.value} max={managedCount} tone={row.tone} thin />

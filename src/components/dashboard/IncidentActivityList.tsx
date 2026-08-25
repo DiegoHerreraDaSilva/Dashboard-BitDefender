@@ -31,7 +31,7 @@ const TIME_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
   minute: "2-digit",
 });
 
-const MAX_ROWS_SHOWN = 8;
+const MAX_ROWS_SHOWN = 6;
 
 // One feed instead of two competing lists: every incident in GravityZone's
 // history shows up exactly once, most recent activity first. A repeated
@@ -61,7 +61,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               const Icon = isRecurring ? Repeat2 : meta.Icon;
               const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
               return (
-                <li key={entry.id} className="flex items-center justify-between gap-4 text-xl break-inside-avoid mb-2">
+                <li key={entry.id} className="flex items-center justify-between gap-4 text-2xl break-inside-avoid mb-3">
                   <div className="flex items-center gap-2 min-w-0">
                     <Icon className="size-4 shrink-0" style={{ color }} aria-hidden />
                     <span className="truncate font-medium">{entry.title}</span>
@@ -73,7 +73,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
                         <span className="font-semibold" style={{ color: "var(--bad)" }}>
                           {entry.count}x
                         </span>
-                        <span className="text-base muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
+                        <span className="text-lg muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
                       </>
                     ) : (
                       <span className="muted">{TIME_FORMATTER.format(entry.lastSeen)}</span>
@@ -83,7 +83,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               );
             })}
           </ul>
-          {hiddenCount > 0 ? <p className="text-base muted -mt-2">+{hiddenCount} outros incidentes</p> : null}
+          {hiddenCount > 0 ? <p className="text-lg muted -mt-2">+{hiddenCount} outros incidentes</p> : null}
         </>
       )}
     </Card>
