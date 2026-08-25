@@ -1,26 +1,148 @@
 @import "tailwindcss";
 
+/*
+ * Schwaben design tokens, trimmed for a passive, always-on TV display on an
+ * unknown/possibly old browser engine:
+ *  - dark-only (no next-themes toggle — there's no one to click it on a TV)
+ *  - tone glow/accent values are static tokens, not color-mix() — color-mix()
+ *    only ships on newer engines and there is no way to know the TV's version
+ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  --bg: #020617;
+  --bg-glow-a: rgba(15, 168, 164, 0.22);
+  --bg-glow-b: rgba(100, 120, 238, 0.16);
+  --surface: #1c2127;
+  --surface-2: #232a31;
+  --surface-grad: #171c22;
+  --border: #2e373f;
+  --hairline: rgba(255, 255, 255, 0.06);
+  --text: #eef2f4;
+  --text-muted: #9aa6b0;
+
+  --brand: #3bbdc9;
+  --accent: #0fa8a4;
+  --accent-hi: #4fe3dc;
+  --accent-glow: rgba(79, 227, 220, 0.35);
+
+  --ok: #3ddc97;
+  --ok-hi: #8af2c4;
+  --ok-glow: rgba(61, 220, 151, 0.4);
+  --warn: #ffc247;
+  --warn-hi: #ffe08a;
+  --warn-glow: rgba(255, 194, 71, 0.4);
+  --bad: #ff6b6b;
+  --bad-hi: #ff9d9d;
+  --bad-glow: rgba(255, 107, 107, 0.4);
+
+  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.4), 0 14px 32px -22px rgba(0, 0, 0, 0.9);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  border-color: var(--border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(64rem 36rem at 10% -8%, var(--bg-glow-a), transparent 72%),
+    radial-gradient(52rem 32rem at 94% 2%, var(--bg-glow-b), transparent 74%),
+    radial-gradient(50rem 30rem at 50% 108%, var(--bg-glow-a), transparent 70%);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.card {
+  position: relative;
+  z-index: 0;
+  background: linear-gradient(163deg, var(--surface) 0%, var(--surface-grad) 140%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 0 var(--hairline), var(--shadow-card);
+}
+
+/* Soft radial glow bleeding in from the top corner, tinted by the card's own
+   tone — the gradient surface alone reads as flat on a compressed TV/photo,
+   this gives each card a visible light source instead of just a color note
+   at the bottom edge. Rounded to match .card itself (not overflow:hidden on
+   .card, which would clip the ::after glow's box-shadow below). */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 14px;
+  pointer-events: none;
+  background: radial-gradient(28rem 14rem at 8% -12%, var(--card-glow, var(--accent-glow)), transparent 62%);
+  opacity: 0.55;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: -1px;
+  height: 3px;
+  border-radius: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--card-accent, var(--accent)) 18%,
+    var(--card-accent-hi, var(--accent-hi)) 50%,
+    var(--card-accent, var(--accent)) 82%,
+    transparent 100%
+  );
+  box-shadow: 0 0 20px 2px var(--card-glow, var(--accent-glow));
+  opacity: 0.95;
+}
+
+.num-hero {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Gradient-clipped hero number, only for engines that support it (near-universal,
+   but degrade to a plain solid --text color above if not — never invisible text). */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .num-hero {
+    background: linear-gradient(177deg, var(--text) 0%, var(--card-accent, var(--accent-hi)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 14px var(--card-glow, var(--accent-glow)));
+  }
+}
+
+.bar-track {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--card-accent, var(--accent)) 0%, var(--card-accent-hi, var(--accent-hi)) 100%);
 }
