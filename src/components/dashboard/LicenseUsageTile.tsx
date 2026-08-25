@@ -54,19 +54,19 @@ export function LicenseUsageTile({ state, now, className }: LicenseUsageTileProp
 
   return (
     <Card tone={tone} className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
+      <h2 className="flex items-center gap-2 text-2xl font-semibold tracking-tight">
         <KeyRound className="size-5" style={{ color: toneColor(tone) }} aria-hidden />
         Licenciamento
       </h2>
       {!hasCounts ? (
-        <p className="text-base muted">Conectando à GravityZone...</p>
+        <p className="text-lg muted">Conectando à GravityZone...</p>
       ) : (
         <>
-          <div className="text-3xl font-semibold tabular-nums">
-            {license.used} / {license.total} <span className="text-base font-normal muted">assentos</span>
+          <div className="text-4xl font-semibold tabular-nums">
+            {license.used} / {license.total} <span className="text-lg font-normal muted">assentos</span>
           </div>
           <ProgressBar value={license.used!} max={license.total!} tone={tone} />
-          <p className="text-base muted">
+          <p className="text-lg muted">
             {license.expiresAt
               ? `Expira em ${DATE_FORMATTER.format(license.expiresAt)}${daysLeft !== null ? ` (${daysLeft} dias)` : ""}`
               : "Data de expiração não disponível"}

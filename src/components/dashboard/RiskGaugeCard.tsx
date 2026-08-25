@@ -33,12 +33,12 @@ export function RiskGaugeCard({ state, className }: RiskGaugeCardProps) {
 
   return (
     <Card tone={tone} className={`p-6 flex flex-col items-center gap-1 ${className ?? ""}`}>
-      <h2 className="flex items-center gap-2 self-start text-xl font-semibold tracking-tight">
+      <h2 className="flex items-center gap-2 self-start text-2xl font-semibold tracking-tight">
         <Gauge className="size-5" style={{ color: toneColor(tone) }} aria-hidden />
         Risco médio (PHASR)
       </h2>
       {score === null ? (
-        <p className="text-base muted">Conectando à GravityZone...</p>
+        <p className="text-lg muted">Conectando à GravityZone...</p>
       ) : (
         <GaugeChart value={score} color={toneColor(tone)} label={riskLabel(tone)} size={300} />
       )}

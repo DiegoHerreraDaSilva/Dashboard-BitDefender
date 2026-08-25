@@ -27,7 +27,7 @@ export function SyncStatus({ states, now }: SyncStatusProps) {
 
   if (neverSynced && !oldest) {
     return (
-      <div className="flex items-center gap-1.5 text-sm" style={{ color: "var(--bad)" }}>
+      <div className="flex items-center gap-1.5 text-base" style={{ color: "var(--bad)" }}>
         <XCircle className="size-3.5 shrink-0" aria-hidden />
         Nunca sincronizado
       </div>
@@ -47,7 +47,7 @@ export function SyncStatus({ states, now }: SyncStatusProps) {
     : `Atualizado há ${ageMinutes} min`;
 
   return (
-    <div className="flex items-center gap-1.5 text-sm" style={{ color }}>
+    <div className="flex items-center gap-1.5 text-base" style={{ color }}>
       <Icon className="size-3.5 shrink-0" aria-hidden />
       {label}
     </div>
