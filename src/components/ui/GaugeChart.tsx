@@ -38,7 +38,7 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
   // those two labels were clipped clean off. sidePadding widens the canvas
   // (mirroring topPadding) instead of shrinking the label radius, so the
   // rim/ticks/arc geometry itself doesn't change size.
-  const sidePadding = size * 0.09;
+  const sidePadding = size * 0.11;
   const width = size + sidePadding * 2;
 
   const minorTicks = Array.from({ length: Math.floor(100 / MINOR_STEP) + 1 }, (_, i) => i * MINOR_STEP).filter(
