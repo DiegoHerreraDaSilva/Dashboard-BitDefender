@@ -35,16 +35,16 @@ export function TotalEndpointsCard({ state, className }: TotalEndpointsCardProps
             ]}
             centerLabel={<span className="text-5xl font-semibold tabular-nums">{summary.total}</span>}
           />
-          <div className="flex flex-col gap-3 text-xl">
+          <div className="flex flex-col gap-3 text-2xl">
             <div className="flex items-center gap-3">
-              <span className="size-3.5 rounded-full shrink-0" style={{ background: "var(--ok)" }} aria-hidden />
+              <span className="size-4 rounded-full shrink-0" style={{ background: "var(--ok)" }} aria-hidden />
               <span className="font-medium">Gerenciados</span>
               <span className="muted tabular-nums">
                 {summary.managedCount} ({pct(summary.managedCount, summary.total)}%)
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="size-3.5 rounded-full shrink-0" style={{ background: "var(--warn)" }} aria-hidden />
+              <span className="size-4 rounded-full shrink-0" style={{ background: "var(--warn)" }} aria-hidden />
               <span className="font-medium">Não gerenciados</span>
               <span className="muted tabular-nums">
                 {summary.unmanagedCount} ({pct(summary.unmanagedCount, summary.total)}%)

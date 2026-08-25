@@ -25,9 +25,9 @@ export default async function DashboardPage() {
   const renderedAt = new Date();
 
   return (
-    <main className="h-screen overflow-hidden flex flex-col gap-4 p-10">
+    <main className="h-screen overflow-hidden flex flex-col gap-3 p-8">
       <DashboardHeader renderedAt={renderedAt} syncStates={[fleet, incidents, license, company]} />
-      <div className="flex flex-col gap-4 flex-1 min-h-0">
+      <div className="flex flex-col gap-3 flex-1 min-h-0">
         <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
           <TotalEndpointsCard state={fleet} className="min-h-0" />
           <RiskGaugeCard state={fleet} className="min-h-0" />
@@ -38,7 +38,7 @@ export default async function DashboardPage() {
           <LicenseUsageTile state={license} now={renderedAt} className="min-h-0" />
           <AgentVersionBreakdown state={fleet} className="min-h-0 overflow-hidden" />
         </div>
-        <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
+        <div className="grid grid-cols-3 gap-4 flex-[1.2] min-h-0">
           <IncidentActivityList state={incidents} className="col-span-2 min-h-0 overflow-hidden" />
           <LatestIncidentCard state={incidents} className="min-h-0 overflow-hidden" />
         </div>

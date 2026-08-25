@@ -61,9 +61,9 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               const Icon = isRecurring ? Repeat2 : meta.Icon;
               const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
               return (
-                <li key={entry.id} className="flex items-center justify-between gap-4 text-xl break-inside-avoid mb-2">
+                <li key={entry.id} className="flex items-center justify-between gap-4 text-2xl break-inside-avoid mb-3">
                   <div className="flex items-center gap-2 min-w-0">
-                    <Icon className="size-4 shrink-0" style={{ color }} aria-hidden />
+                    <Icon className="size-5 shrink-0" style={{ color }} aria-hidden />
                     <span className="truncate font-medium">{entry.title}</span>
                     <span className="truncate muted">· {entry.endpointName}</span>
                   </div>
@@ -73,7 +73,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
                         <span className="font-semibold" style={{ color: "var(--bad)" }}>
                           {entry.count}x
                         </span>
-                        <span className="text-lg muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
+                        <span className="text-xl muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
                       </>
                     ) : (
                       <span className="muted">{TIME_FORMATTER.format(entry.lastSeen)}</span>
