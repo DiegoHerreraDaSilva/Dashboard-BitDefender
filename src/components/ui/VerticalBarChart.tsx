@@ -45,7 +45,7 @@ export function VerticalBarChart({ bars, height = 140 }: VerticalBarChartProps) 
           >
             <div className="relative w-full min-h-0">
               <span
-                className="absolute inset-x-0 text-center text-base font-semibold tabular-nums whitespace-nowrap"
+                className="absolute inset-x-0 text-center text-lg font-semibold tabular-nums whitespace-nowrap"
                 style={{ bottom: `calc(${pct}% + ${VALUE_GAP_PX}px)` }}
               >
                 {bar.value}
@@ -55,7 +55,7 @@ export function VerticalBarChart({ bars, height = 140 }: VerticalBarChartProps) 
                 style={{ height: `${pct}%`, background: bar.color }}
               />
             </div>
-            <span className="text-base tabular-nums whitespace-nowrap" style={{ color: "var(--text)" }}>
+            <span className="text-lg tabular-nums whitespace-nowrap" style={{ color: "var(--text)" }}>
               {bar.label}
             </span>
           </div>

@@ -40,7 +40,9 @@ export function CompanyRiskCard({ state, className }: CompanyRiskCardProps) {
         <p className="text-lg muted">Conectando à GravityZone...</p>
       ) : (
         <div className="flex flex-1 items-center gap-4 min-h-0">
-          <GaugeChart value={summary.score} color={toneColor(tone)} label={summary.impact} size={160} />
+          <div className="shrink-0">
+            <GaugeChart value={summary.score} color={toneColor(tone)} label={summary.impact} size={190} />
+          </div>
           <ul className="flex flex-1 flex-col gap-2 min-w-0">
             {BREAKDOWN_ROWS.map((row) => {
               const value = summary[row.key];
