@@ -37,7 +37,7 @@ function IncidentRow({ entry }: { entry: IncidentActivityEntry }) {
   const isRecurring = entry.count >= 2;
   const meta = SEVERITY_META[entry.severity];
   const Icon = isRecurring ? Repeat2 : meta.Icon;
-  const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
+  const color = isRecurring ? toneColor("bad") : toneColor(meta.tone);
   return (
     <li className="flex items-center justify-between gap-4 text-base">
       <div className="flex items-center gap-2 min-w-0">
@@ -48,7 +48,7 @@ function IncidentRow({ entry }: { entry: IncidentActivityEntry }) {
       <div className="flex items-center gap-3 shrink-0 tabular-nums">
         {isRecurring ? (
           <>
-            <span className="font-semibold" style={{ color: "var(--bad)" }}>
+            <span className="font-semibold" style={{ color: toneColor("bad") }}>
               {entry.count}x
             </span>
             <span className="text-xs muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>

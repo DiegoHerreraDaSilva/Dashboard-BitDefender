@@ -1,5 +1,6 @@
 import { LiveClock } from "./LiveClock";
 import { SyncStatus } from "./SyncStatus";
+import { BRAND_COLOR } from "@/components/ui/Card";
 import type { SnapshotState } from "@/lib/cache";
 
 interface DashboardHeaderProps {
@@ -18,7 +19,7 @@ export function DashboardHeader({ renderedAt, syncStates }: DashboardHeaderProps
   return (
     <header className="flex items-center justify-between">
       <div>
-        <p className="text-sm font-semibold tracking-wide" style={{ color: "var(--brand)" }}>
+        <p className="text-sm font-semibold tracking-wide" style={{ color: BRAND_COLOR }}>
           SCHWABEN ENGINEERING
         </p>
         <h1 className="text-3xl font-semibold tracking-tight">Status de Segurança — GravityZone</h1>

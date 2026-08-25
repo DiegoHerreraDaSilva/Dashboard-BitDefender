@@ -1,5 +1,5 @@
 import { CheckCircle2, Cpu } from "lucide-react";
-import { Card } from "@/components/ui/Card";
+import { Card, TEXT_MUTED_COLOR, toneColor } from "@/components/ui/Card";
 import { VerticalBarChart } from "@/components/ui/VerticalBarChart";
 import type { SnapshotState } from "@/lib/cache";
 import { compareVersions, type FleetSummary } from "@/lib/gravityzone/classify";
@@ -46,7 +46,7 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
       ) : (
         <>
           <p className="flex items-center gap-2 text-sm">
-            <CheckCircle2 className="size-4 shrink-0" style={{ color: "var(--ok)" }} aria-hidden />
+            <CheckCircle2 className="size-4 shrink-0" style={{ color: toneColor("ok") }} aria-hidden />
             <span className="font-medium tabular-nums">{latest.version}</span>
             <span className="muted">
               é a mais recente · <span className="tabular-nums">{pct(latest.count, total)}%</span> da frota
@@ -57,7 +57,7 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
             bars={displayOrder.map((entry) => ({
               label: entry.version,
               value: entry.count,
-              color: entry.isLatest ? "var(--ok)" : "var(--text-muted)",
+              color: entry.isLatest ? toneColor("ok") : TEXT_MUTED_COLOR,
             }))}
           />
           {hiddenCount > 0 ? <p className="text-xs muted">+{hiddenCount} outras versões</p> : null}

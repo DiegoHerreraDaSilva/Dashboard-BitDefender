@@ -1,3 +1,5 @@
+import { TEXT_COLOR, TEXT_MUTED_COLOR } from "@/components/ui/Card";
+
 interface GaugeChartProps {
   value: number; // 0-100
   color: string;
@@ -62,7 +64,7 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
               textAnchor="middle"
               dominantBaseline="middle"
               fontSize={size * 0.055}
-              fill="var(--text-muted)"
+              fill={TEXT_MUTED_COLOR}
             >
               {v}
             </text>
@@ -79,10 +81,10 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
         pathLength={100}
         strokeDasharray={`${clamped} ${100 - clamped}`}
       />
-      <text x={cx} y={cy - size * 0.02} textAnchor="middle" fontSize={size * 0.2} fontWeight={600} fill="var(--text)">
+      <text x={cx} y={cy - size * 0.02} textAnchor="middle" fontSize={size * 0.2} fontWeight={600} fill={TEXT_COLOR}>
         {Math.round(clamped)}
       </text>
-      <text x={cx} y={cy + size * 0.15} textAnchor="middle" fontSize={size * 0.075} fill="var(--text-muted)">
+      <text x={cx} y={cy + size * 0.15} textAnchor="middle" fontSize={size * 0.075} fill={TEXT_MUTED_COLOR}>
         {label}
       </text>
       </g>

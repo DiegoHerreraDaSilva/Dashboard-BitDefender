@@ -1,3 +1,5 @@
+import { TEXT_COLOR } from "@/components/ui/Card";
+
 export interface VerticalBar {
   label: string;
   value: number;
@@ -25,7 +27,7 @@ export function VerticalBarChart({ bars, height = 140 }: VerticalBarChartProps) 
           <div key={`${bar.label}-${index}`} className="flex h-full flex-1 min-w-0 flex-col items-center justify-end gap-1.5">
             <span className="text-xs font-semibold tabular-nums">{bar.value}</span>
             <div className="w-full rounded-t-md" style={{ height: `${pct}%`, background: bar.color }} />
-            <span className="text-xs tabular-nums whitespace-nowrap" style={{ color: "var(--text)" }}>
+            <span className="text-xs tabular-nums whitespace-nowrap" style={{ color: TEXT_COLOR }}>
               {bar.label}
             </span>
           </div>

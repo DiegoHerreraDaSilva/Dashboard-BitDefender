@@ -11,6 +11,17 @@
  *  - Tailwind v3, not v4: v4's output wraps everything in @layer (Cascade
  *    Layers), which this TV's browser doesn't support at all — it silently
  *    drops the whole stylesheet. v3 compiles to plain flat CSS instead.
+ *  - Confirmed live on the actual TV (a /diag probe page): this browser also
+ *    does not support CSS custom properties (var()) at all — a declaration
+ *    that uses var() is invalid and gets dropped entirely, fallback argument
+ *    or not, so every property that must render correctly here is written as
+ *    a literal hardcoded value FIRST, with the var()-based version (if any)
+ *    as a later, separate declaration of the same property that a modern
+ *    browser applies on top. Tone-varying styling (card accent, bar fill)
+ *    can't use var()-with-fallback for this at all — a single shared CSS
+ *    rule can't read a per-instance custom property if the browser never
+ *    parses custom properties — so those use explicit .tone-* classes with
+ *    hardcoded hex per tone instead of one generic rule.
  */
 
 :root {
@@ -51,7 +62,9 @@
 
 html,
 body {
+  background: #020617;
   background: var(--bg);
+  color: #eef2f4;
   color: var(--text);
   min-height: 100%;
 }
@@ -74,15 +87,19 @@ body::before {
 }
 
 .muted {
+  color: #9aa6b0;
   color: var(--text-muted);
 }
 
 .card {
   position: relative;
   z-index: 0;
+  background: #1c2127;
   background: linear-gradient(163deg, var(--surface) 0%, var(--surface-grad) 140%);
+  border: 1px solid #2e373f;
   border: 1px solid var(--border);
   border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 14px 32px -22px rgba(0, 0, 0, 0.9);
   box-shadow: inset 0 1px 0 0 var(--hairline), var(--shadow-card);
 }
 
@@ -90,7 +107,10 @@ body::before {
    tone — the gradient surface alone reads as flat on a compressed TV/photo,
    this gives each card a visible light source instead of just a color note
    at the bottom edge. Rounded to match .card itself (not overflow:hidden on
-   .card, which would clip the ::after glow's box-shadow below). */
+   .card, which would clip the ::after glow's box-shadow below). Tone-varying,
+   so it's expressed per .tone-* class below with hardcoded hex, not a
+   generic rule reading a custom property (this browser has no var() at all).
+   Default/brand tone is the base .card::before/::after here. */
 .card::before {
   content: "";
   position: absolute;
@@ -98,6 +118,7 @@ body::before {
   z-index: -1;
   border-radius: 14px;
   pointer-events: none;
+  background: rgba(79, 227, 220, 0.35);
   background: radial-gradient(28rem 14rem at 8% -12%, var(--card-glow, var(--accent-glow)), transparent 62%);
   opacity: 0.55;
 }
@@ -111,6 +132,8 @@ body::before {
   height: 3px;
   border-radius: 2px;
   pointer-events: none;
+  background: #0fa8a4;
+  background: linear-gradient(90deg, transparent 0%, #0fa8a4 18%, #4fe3dc 50%, #0fa8a4 82%, transparent 100%);
   background: linear-gradient(
     90deg,
     transparent 0%,
@@ -119,25 +142,45 @@ body::before {
     var(--card-accent, var(--accent)) 82%,
     transparent 100%
   );
+  box-shadow: 0 0 20px 2px rgba(79, 227, 220, 0.35);
   box-shadow: 0 0 20px 2px var(--card-glow, var(--accent-glow));
   opacity: 0.95;
 }
 
-.num-hero {
-  color: var(--text);
-  font-variant-numeric: tabular-nums;
+.card.tone-ok::before {
+  background: rgba(61, 220, 151, 0.4);
+}
+.card.tone-ok::after {
+  background: #3ddc97;
+  background: linear-gradient(90deg, transparent 0%, #3ddc97 18%, #8af2c4 50%, #3ddc97 82%, transparent 100%);
+  box-shadow: 0 0 20px 2px rgba(61, 220, 151, 0.4);
 }
 
-/* Gradient-clipped hero number, only for engines that support it (near-universal,
-   but degrade to a plain solid --text color above if not — never invisible text). */
-@supports (background-clip: text) or (-webkit-background-clip: text) {
-  .num-hero {
-    background: linear-gradient(177deg, var(--text) 0%, var(--card-accent, var(--accent-hi)) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 0 14px var(--card-glow, var(--accent-glow)));
-  }
+.card.tone-warn::before {
+  background: rgba(255, 194, 71, 0.4);
+}
+.card.tone-warn::after {
+  background: #ffc247;
+  background: linear-gradient(90deg, transparent 0%, #ffc247 18%, #ffe08a 50%, #ffc247 82%, transparent 100%);
+  box-shadow: 0 0 20px 2px rgba(255, 194, 71, 0.4);
+}
+
+.card.tone-bad::before {
+  background: rgba(255, 107, 107, 0.4);
+}
+.card.tone-bad::after {
+  background: #ff6b6b;
+  background: linear-gradient(90deg, transparent 0%, #ff6b6b 18%, #ff9d9d 50%, #ff6b6b 82%, transparent 100%);
+  box-shadow: 0 0 20px 2px rgba(255, 107, 107, 0.4);
+}
+
+.card.tone-neutral::before {
+  background: rgba(154, 166, 176, 0.35);
+}
+.card.tone-neutral::after {
+  background: #9aa6b0;
+  background: linear-gradient(90deg, transparent 0%, #9aa6b0 18%, #9aa6b0 50%, #9aa6b0 82%, transparent 100%);
+  box-shadow: none;
 }
 
 .bar-track {
@@ -149,5 +192,23 @@ body::before {
 
 .bar-fill {
   border-radius: 999px;
+  background: #0fa8a4;
+  background: linear-gradient(90deg, #0fa8a4 0%, #4fe3dc 100%);
   background: linear-gradient(90deg, var(--card-accent, var(--accent)) 0%, var(--card-accent-hi, var(--accent-hi)) 100%);
+}
+
+.bar-fill.tone-ok {
+  background: #3ddc97;
+  background: linear-gradient(90deg, #3ddc97 0%, #8af2c4 100%);
+}
+.bar-fill.tone-warn {
+  background: #ffc247;
+  background: linear-gradient(90deg, #ffc247 0%, #ffe08a 100%);
+}
+.bar-fill.tone-bad {
+  background: #ff6b6b;
+  background: linear-gradient(90deg, #ff6b6b 0%, #ff9d9d 100%);
+}
+.bar-fill.tone-neutral {
+  background: #9aa6b0;
 }
