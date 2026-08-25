@@ -1,4 +1,5 @@
-import { toneClassName, type CardTone } from "./Card";
+import type { CSSProperties } from "react";
+import { toneVars, type CardTone } from "./Card";
 
 interface ProgressBarProps {
   value: number;
@@ -15,8 +16,8 @@ export function ProgressBar({ value, max, tone = "brand" }: ProgressBarProps) {
   // must never look weaker than "basically zero".
   const pct = rawPct > 0 ? Math.max(rawPct, MIN_VISIBLE_PERCENT) : 0;
   return (
-    <div className="bar-track h-3 w-full">
-      <div className={`bar-fill h-full ${toneClassName(tone)}`} style={{ width: `${pct}%` }} />
+    <div className="bar-track h-3 w-full" style={toneVars(tone) as CSSProperties}>
+      <div className="bar-fill h-full" style={{ width: `${pct}%` }} />
     </div>
   );
 }

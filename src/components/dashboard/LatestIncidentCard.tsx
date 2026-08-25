@@ -31,21 +31,21 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("pt-BR", {
   month: "2-digit",
 });
 
-// Precomputed rgba, not color-mix() or var() — the TV's browser doesn't
-// support either, so tinted badge backgrounds use the same hardcoded values
-// as the card's own tone glow (see globals.css) instead of a CSS token.
+// Precomputed rgba tokens, not color-mix() — the TV's stock browser age is
+// unknown, so tinted badge backgrounds use the same static tokens as the
+// card's own tone glow instead of a runtime color function.
 function toneGlow(tone: CardTone): string {
   switch (tone) {
     case "ok":
-      return "rgba(61, 220, 151, 0.4)";
+      return "var(--ok-glow)";
     case "warn":
-      return "rgba(255, 194, 71, 0.4)";
+      return "var(--warn-glow)";
     case "bad":
-      return "rgba(255, 107, 107, 0.4)";
+      return "var(--bad-glow)";
     case "neutral":
       return "transparent";
     default:
-      return "rgba(79, 227, 220, 0.35)";
+      return "var(--accent-glow)";
   }
 }
 
@@ -77,7 +77,7 @@ export function LatestIncidentCard({ state, className }: LatestIncidentCardProps
           </span>
           {isRecurring ? (
             <p className="text-sm muted">
-              <span className="font-semibold" style={{ color: toneColor("bad") }}>
+              <span className="font-semibold" style={{ color: "var(--bad)" }}>
                 {latest.count}x
               </span>{" "}
               · primeira em {DATE_FORMATTER.format(latest.firstSeen)} · última em {DATE_TIME_FORMATTER.format(latest.lastSeen)}

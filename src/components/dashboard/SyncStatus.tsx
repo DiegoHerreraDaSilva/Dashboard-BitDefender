@@ -1,5 +1,4 @@
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
-import { toneColor } from "@/components/ui/Card";
 import { cacheTtlSeconds, dashboardRefreshSeconds } from "@/lib/config";
 import type { SnapshotState } from "@/lib/cache";
 
@@ -28,7 +27,7 @@ export function SyncStatus({ states, now }: SyncStatusProps) {
 
   if (neverSynced && !oldest) {
     return (
-      <div className="flex items-center gap-1.5 text-xs" style={{ color: toneColor("bad") }}>
+      <div className="flex items-center gap-1.5 text-xs" style={{ color: "var(--bad)" }}>
         <XCircle className="size-3.5 shrink-0" aria-hidden />
         Nunca sincronizado
       </div>
@@ -41,7 +40,7 @@ export function SyncStatus({ states, now }: SyncStatusProps) {
 
   const tone: "ok" | "warn" | "bad" =
     neverSynced || ageMs > expectedMs * 4 ? "bad" : ageMs > expectedMs * 2 ? "warn" : "ok";
-  const color = toneColor(tone);
+  const color = tone === "ok" ? "var(--ok)" : tone === "warn" ? "var(--warn)" : "var(--bad)";
   const Icon = tone === "ok" ? CheckCircle2 : AlertTriangle;
   const label = neverSynced
     ? `Atualizado há ${ageMinutes} min (1 domínio nunca sincronizou)`
