@@ -30,7 +30,7 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
   // point is only ~size*0.075 below y=0) — without headroom its glyph gets
   // clipped by the SVG's default overflow:hidden. topPadding pushes the
   // whole drawing down so the label has room to breathe above it.
-  const topPadding = size * 0.07;
+  const topPadding = size * 0.085;
   const height = cy + size * 0.2 + topPadding;
 
   const minorTicks = Array.from({ length: Math.floor(100 / MINOR_STEP) + 1 }, (_, i) => i * MINOR_STEP).filter(
@@ -61,7 +61,7 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
               y={labelPoint.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              fontSize={size * 0.055}
+              fontSize={size * 0.07}
               fill="var(--text-muted)"
             >
               {v}
@@ -79,10 +79,10 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
         pathLength={100}
         strokeDasharray={`${clamped} ${100 - clamped}`}
       />
-      <text x={cx} y={cy - size * 0.02} textAnchor="middle" fontSize={size * 0.2} fontWeight={600} fill="var(--text)">
+      <text x={cx} y={cy - size * 0.02} textAnchor="middle" fontSize={size * 0.22} fontWeight={600} fill="var(--text)">
         {Math.round(clamped)}
       </text>
-      <text x={cx} y={cy + size * 0.15} textAnchor="middle" fontSize={size * 0.075} fill="var(--text-muted)">
+      <text x={cx} y={cy + size * 0.15} textAnchor="middle" fontSize={size * 0.09} fill="var(--text-muted)">
         {label}
       </text>
       </g>

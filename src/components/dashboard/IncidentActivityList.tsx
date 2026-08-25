@@ -47,11 +47,11 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
 
   return (
     <Card className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="text-lg font-semibold tracking-tight">Incidentes (histórico completo)</h2>
+      <h2 className="text-xl font-semibold tracking-tight">Incidentes (histórico completo)</h2>
       {state.status === "error" ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : entries.length === 0 ? (
-        <p className="text-sm muted">Nenhum incidente no período.</p>
+        <p className="text-base muted">Nenhum incidente no período.</p>
       ) : (
         <>
           <ul className="columns-2 gap-8">
@@ -61,7 +61,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               const Icon = isRecurring ? Repeat2 : meta.Icon;
               const color = isRecurring ? "var(--bad)" : toneColor(meta.tone);
               return (
-                <li key={entry.id} className="flex items-center justify-between gap-4 text-base break-inside-avoid mb-3">
+                <li key={entry.id} className="flex items-center justify-between gap-4 text-lg break-inside-avoid mb-3">
                   <div className="flex items-center gap-2 min-w-0">
                     <Icon className="size-4 shrink-0" style={{ color }} aria-hidden />
                     <span className="truncate font-medium">{entry.title}</span>
@@ -73,7 +73,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
                         <span className="font-semibold" style={{ color: "var(--bad)" }}>
                           {entry.count}x
                         </span>
-                        <span className="text-xs muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
+                        <span className="text-sm muted">desde {DATE_FORMATTER.format(entry.firstSeen)}</span>
                       </>
                     ) : (
                       <span className="muted">{TIME_FORMATTER.format(entry.lastSeen)}</span>
@@ -83,7 +83,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
               );
             })}
           </ul>
-          {hiddenCount > 0 ? <p className="text-xs muted -mt-2">+{hiddenCount} outros incidentes</p> : null}
+          {hiddenCount > 0 ? <p className="text-sm muted -mt-2">+{hiddenCount} outros incidentes</p> : null}
         </>
       )}
     </Card>

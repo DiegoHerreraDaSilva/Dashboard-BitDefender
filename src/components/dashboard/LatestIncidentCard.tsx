@@ -61,29 +61,29 @@ export function LatestIncidentCard({ state, className }: LatestIncidentCardProps
 
   return (
     <Card tone={tone} className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="text-lg font-semibold tracking-tight">Último incidente</h2>
+      <h2 className="text-xl font-semibold tracking-tight">Último incidente</h2>
       {!latest ? (
-        <p className="text-sm muted">Nenhum incidente no período.</p>
+        <p className="text-base muted">Nenhum incidente no período.</p>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center min-h-0">
           <Icon className="size-10 shrink-0" style={{ color: toneColor(tone) }} aria-hidden />
-          <div className="text-xl font-semibold leading-tight break-words">{latest.title}</div>
-          <div className="text-base muted">{latest.endpointName}</div>
+          <div className="text-2xl font-semibold leading-tight break-words">{latest.title}</div>
+          <div className="text-lg muted">{latest.endpointName}</div>
           <span
-            className="rounded-full px-3 py-1 text-xs font-semibold"
+            className="rounded-full px-3 py-1 text-sm font-semibold"
             style={{ background: toneGlow(tone), color: toneColor(tone) }}
           >
             Severidade: {meta?.label ?? "Desconhecida"}
           </span>
           {isRecurring ? (
-            <p className="text-sm muted">
+            <p className="text-base muted">
               <span className="font-semibold" style={{ color: "var(--bad)" }}>
                 {latest.count}x
               </span>{" "}
               · primeira em {DATE_FORMATTER.format(latest.firstSeen)} · última em {DATE_TIME_FORMATTER.format(latest.lastSeen)}
             </p>
           ) : (
-            <p className="text-sm muted">Detectado em {DATE_TIME_FORMATTER.format(latest.lastSeen)}</p>
+            <p className="text-base muted">Detectado em {DATE_TIME_FORMATTER.format(latest.lastSeen)}</p>
           )}
         </div>
       )}

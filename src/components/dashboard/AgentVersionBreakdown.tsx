@@ -35,17 +35,17 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
 
   return (
     <Card className={`p-6 flex flex-col gap-3 overflow-hidden ${className ?? ""}`}>
-      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+      <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
         <Cpu className="size-5" aria-hidden />
         Versão do agente
       </h2>
       {!summary ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : versions.length === 0 || !latest ? (
-        <p className="text-sm muted">Nenhum dado de versão disponível.</p>
+        <p className="text-base muted">Nenhum dado de versão disponível.</p>
       ) : (
         <>
-          <p className="flex items-center gap-2 text-sm">
+          <p className="flex items-center gap-2 text-base">
             <CheckCircle2 className="size-4 shrink-0" style={{ color: "var(--ok)" }} aria-hidden />
             <span className="font-medium tabular-nums">{latest.version}</span>
             <span className="muted">
@@ -60,7 +60,7 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
               color: entry.isLatest ? "var(--ok)" : "var(--text-muted)",
             }))}
           />
-          {hiddenCount > 0 ? <p className="text-xs muted">+{hiddenCount} outras versões</p> : null}
+          {hiddenCount > 0 ? <p className="text-sm muted">+{hiddenCount} outras versões</p> : null}
         </>
       )}
     </Card>

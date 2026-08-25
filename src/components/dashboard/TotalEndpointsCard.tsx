@@ -18,12 +18,12 @@ export function TotalEndpointsCard({ state, className }: TotalEndpointsCardProps
 
   return (
     <Card className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+      <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
         <Monitor className="size-5" aria-hidden />
         Total de endpoints
       </h2>
       {!summary ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : (
         <div className="flex items-center gap-8">
           <DonutChart
@@ -33,9 +33,9 @@ export function TotalEndpointsCard({ state, className }: TotalEndpointsCardProps
               { value: summary.managedCount, color: "var(--ok)" },
               { value: summary.unmanagedCount, color: "var(--warn)" },
             ]}
-            centerLabel={<span className="text-4xl font-semibold tabular-nums">{summary.total}</span>}
+            centerLabel={<span className="text-5xl font-semibold tabular-nums">{summary.total}</span>}
           />
-          <div className="flex flex-col gap-3 text-base">
+          <div className="flex flex-col gap-3 text-lg">
             <div className="flex items-center gap-3">
               <span className="size-3.5 rounded-full shrink-0" style={{ background: "var(--ok)" }} aria-hidden />
               <span className="font-medium">Gerenciados</span>

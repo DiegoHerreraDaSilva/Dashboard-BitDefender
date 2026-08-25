@@ -40,11 +40,11 @@ export function UnmanagedBreakdown({ state, className }: UnmanagedBreakdownProps
 
   return (
     <Card className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="text-lg font-semibold tracking-tight">Não gerenciados, por tipo</h2>
+      <h2 className="text-xl font-semibold tracking-tight">Não gerenciados, por tipo</h2>
       {!summary ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : groups.length === 0 ? (
-        <p className="text-sm muted">Nenhum dispositivo não gerenciado.</p>
+        <p className="text-base muted">Nenhum dispositivo não gerenciado.</p>
       ) : (
         <ul className="flex flex-col gap-3">
           {groups.map((group) => {
@@ -52,14 +52,14 @@ export function UnmanagedBreakdown({ state, className }: UnmanagedBreakdownProps
             const tone = CATEGORY_TONE[group.category];
             const Icon = CATEGORY_ICON[group.category];
             return (
-              <li key={group.category} className="flex items-center justify-between gap-4 text-base">
+              <li key={group.category} className="flex items-center justify-between gap-4 text-lg">
                 <div className="flex items-center gap-2 min-w-0">
                   <Icon className="size-4 shrink-0" style={{ color: toneColor(tone) }} aria-hidden />
                   <span className="truncate font-medium">{meta.label}</span>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="font-semibold tabular-nums">{group.count}</span>
-                  <span className="text-xs muted">{meta.action}</span>
+                  <span className="text-sm muted">{meta.action}</span>
                 </div>
               </li>
             );

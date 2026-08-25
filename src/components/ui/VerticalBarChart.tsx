@@ -23,9 +23,9 @@ export function VerticalBarChart({ bars, height = 140 }: VerticalBarChartProps) 
         const pct = Math.max(rawPct, MIN_VISIBLE_PERCENT);
         return (
           <div key={`${bar.label}-${index}`} className="flex h-full flex-1 min-w-0 flex-col items-center justify-end gap-1.5">
-            <span className="text-xs font-semibold tabular-nums">{bar.value}</span>
+            <span className="text-sm font-semibold tabular-nums">{bar.value}</span>
             <div className="w-full rounded-t-md" style={{ height: `${pct}%`, background: bar.color }} />
-            <span className="text-xs tabular-nums whitespace-nowrap" style={{ color: "var(--text)" }}>
+            <span className="text-sm tabular-nums whitespace-nowrap" style={{ color: "var(--text)" }}>
               {bar.label}
             </span>
           </div>

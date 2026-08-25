@@ -32,12 +32,12 @@ export function CompanyRiskCard({ state, className }: CompanyRiskCardProps) {
 
   return (
     <Card tone={tone} className={`p-6 flex flex-col gap-3 ${className ?? ""}`}>
-      <h2 className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+      <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
         <Building2 className="size-5" style={{ color: toneColor(tone) }} aria-hidden />
         Estado da empresa
       </h2>
       {!summary || summary.score === null ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : (
         <div className="flex flex-1 items-center gap-4 min-h-0">
           <GaugeChart value={summary.score} color={toneColor(tone)} label={summary.impact} size={160} />
@@ -47,7 +47,7 @@ export function CompanyRiskCard({ state, className }: CompanyRiskCardProps) {
               const pct = typeof value === "number" ? value : 0;
               return (
                 <li key={row.key} className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-base">
                     <span className="font-medium">{row.label}</span>
                     <span className="tabular-nums muted">{typeof value === "number" ? `${Math.round(value)}%` : "—"}</span>
                   </div>

@@ -26,9 +26,9 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
 
   return (
     <Card className={`p-6 flex flex-col gap-4 ${className ?? ""}`}>
-      <h2 className="text-lg font-semibold tracking-tight">Saúde dos gerenciados</h2>
+      <h2 className="text-xl font-semibold tracking-tight">Saúde dos gerenciados</h2>
       {!summary ? (
-        <p className="text-sm muted">Conectando à GravityZone...</p>
+        <p className="text-base muted">Conectando à GravityZone...</p>
       ) : (
         <ul className="flex flex-col gap-3">
           {rows.map((row) => {
@@ -36,14 +36,14 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
             const pct = managedCount > 0 ? Math.round((row.value / managedCount) * 100) : 0;
             return (
               <li key={row.label} className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-base">
+                <div className="flex items-center justify-between text-lg">
                   <span className="flex items-center gap-2 font-medium">
                     <Icon className="size-4 shrink-0" style={{ color: toneColor(row.tone) }} aria-hidden />
                     {row.label}
                   </span>
                   <span className="tabular-nums">
                     <span className="font-semibold">{row.value}</span>{" "}
-                    <span className="text-xs muted">({pct}%)</span>
+                    <span className="text-sm muted">({pct}%)</span>
                   </span>
                 </div>
                 <ProgressBar value={row.value} max={managedCount} tone={row.tone} />
