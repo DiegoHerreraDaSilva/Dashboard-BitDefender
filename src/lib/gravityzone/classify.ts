@@ -137,14 +137,28 @@ export function classifyUnmanaged(items: RawRecord[]): UnmanagedGroup[] {
 
 // --- Agent version breakdown -------------------------------------------------
 //
-// No official "latest version" reference is exposed by the API, so the most
-// common version among managed endpoints is treated as the baseline; any
-// other distinct version is flagged as out of date relative to the fleet.
+// No official "latest version" reference is exposed by the API (no release
+// feed to check against), so the newest version number actually seen running
+// somewhere in the fleet is treated as the target — a dot-separated numeric
+// compare (e.g. "8.26.8.659" > "8.26.8.654"), not a popularity vote. A
+// version being rare doesn't make it outdated; being older than what's
+// already deployed elsewhere does.
 
 export interface AgentVersionGroup {
   version: string;
   count: number;
-  isMajority: boolean;
+  isLatest: boolean;
+}
+
+export function compareVersions(a: string, b: string): number {
+  const partsA = a.split(".").map((n) => Number.parseInt(n, 10) || 0);
+  const partsB = b.split(".").map((n) => Number.parseInt(n, 10) || 0);
+  const length = Math.max(partsA.length, partsB.length);
+  for (let i = 0; i < length; i++) {
+    const diff = (partsA[i] ?? 0) - (partsB[i] ?? 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
 }
 
 export function classifyAgentVersions(versions: string[]): AgentVersionGroup[] {
@@ -152,11 +166,15 @@ export function classifyAgentVersions(versions: string[]): AgentVersionGroup[] {
   for (const version of versions) {
     counts.set(version, (counts.get(version) ?? 0) + 1);
   }
-  const sorted = Array.from(counts.entries())
-    .map(([version, count]) => ({ version, count }))
-    .sort((a, b) => b.count - a.count);
-  const majorityVersion = sorted[0]?.version;
-  return sorted.map((entry) => ({ ...entry, isMajority: entry.version === majorityVersion }));
+  const entries = Array.from(counts.entries()).map(([version, count]) => ({ version, count }));
+  const latestVersion = entries.reduce(
+    (latest, entry) => (compareVersions(entry.version, latest) > 0 ? entry.version : latest),
+    entries[0]?.version ?? ""
+  );
+
+  return entries
+    .map((entry) => ({ ...entry, isLatest: entry.version === latestVersion }))
+    .sort((a, b) => (a.isLatest !== b.isLatest ? (a.isLatest ? -1 : 1) : b.count - a.count));
 }
 
 export function summarizeFleet(managed: ManagedEndpointClassification[], unmanagedItems: RawRecord[]): FleetSummary {

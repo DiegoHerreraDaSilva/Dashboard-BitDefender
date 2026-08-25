@@ -1,28 +1,37 @@
-import { Cpu } from "lucide-react";
+import { CheckCircle2, Cpu } from "lucide-react";
 import { Card } from "@/components/ui/Card";
-import { ProgressBar } from "@/components/ui/ProgressBar";
+import { VerticalBarChart } from "@/components/ui/VerticalBarChart";
 import type { SnapshotState } from "@/lib/cache";
-import type { FleetSummary } from "@/lib/gravityzone/classify";
+import { compareVersions, type FleetSummary } from "@/lib/gravityzone/classify";
 
 interface AgentVersionBreakdownProps {
   state: SnapshotState<FleetSummary>;
   className?: string;
 }
 
-const MAX_VERSIONS_SHOWN = 3;
+const MAX_BARS_SHOWN = 6;
+
+function pct(value: number, total: number): number {
+  return total > 0 ? Math.round((value / total) * 100) : 0;
+}
 
 // Outdated agents are the quiet cause of a "protected" endpoint that really
-// isn't. The majority version among managed endpoints is treated as the
-// fleet's baseline; anything else is flagged, since the API exposes no
-// separate "latest version" reference to compare against. Zero extra API
-// calls — agent.productVersion rides along on the same getManagedEndpointDetails
-// call already made per endpoint for malware/offline status.
+// isn't. The newest version number actually running somewhere in the fleet
+// (a real dot-separated compare, not a popularity vote) is the target —
+// highlighted green in the bar chart, everything else neutral. Zero extra
+// API calls — agent.productVersion rides along on the same
+// getManagedEndpointDetails call already made per endpoint.
 export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdownProps) {
   const summary = state.status === "error" ? null : state.data;
   const versions = summary?.agentVersions ?? [];
-  const shown = versions.slice(0, MAX_VERSIONS_SHOWN);
+  const total = versions.reduce((sum, entry) => sum + entry.count, 0);
+  const latest = versions.find((entry) => entry.isLatest) ?? null;
+  const shown = versions.slice(0, MAX_BARS_SHOWN);
   const hiddenCount = versions.length - shown.length;
-  const maxCount = versions[0]?.count ?? 0;
+  // Selection above stays relevance-ranked (latest + most common others);
+  // display order is chronological left-to-right — oldest version on the
+  // left, newest on the right — like a version-adoption timeline.
+  const displayOrder = [...shown].sort((a, b) => compareVersions(a.version, b.version));
 
   return (
     <Card className={`p-6 flex flex-col gap-3 overflow-hidden ${className ?? ""}`}>
@@ -32,28 +41,25 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
       </h2>
       {!summary ? (
         <p className="text-sm muted">Conectando à GravityZone...</p>
-      ) : versions.length === 0 ? (
+      ) : versions.length === 0 || !latest ? (
         <p className="text-sm muted">Nenhum dado de versão disponível.</p>
       ) : (
         <>
-          <ul className="flex flex-col gap-3">
-            {shown.map((entry) => (
-              <li key={entry.version} className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-base">
-                  <span className="font-medium tabular-nums">{entry.version}</span>
-                  <span className="flex items-center gap-2 tabular-nums">
-                    <span className="muted">{entry.count}</span>
-                    {!entry.isMajority ? (
-                      <span className="text-xs" style={{ color: "var(--accent-hi)" }}>
-                        desatualizado
-                      </span>
-                    ) : null}
-                  </span>
-                </div>
-                <ProgressBar value={entry.count} max={maxCount} tone={entry.isMajority ? "ok" : "brand"} />
-              </li>
-            ))}
-          </ul>
+          <p className="flex items-center gap-2 text-sm">
+            <CheckCircle2 className="size-4 shrink-0" style={{ color: "var(--ok)" }} aria-hidden />
+            <span className="font-medium tabular-nums">{latest.version}</span>
+            <span className="muted">
+              é a mais recente · <span className="tabular-nums">{pct(latest.count, total)}%</span> da frota
+            </span>
+          </p>
+          <VerticalBarChart
+            height={130}
+            bars={displayOrder.map((entry) => ({
+              label: entry.version,
+              value: entry.count,
+              color: entry.isLatest ? "var(--ok)" : "var(--text-muted)",
+            }))}
+          />
           {hiddenCount > 0 ? <p className="text-xs muted">+{hiddenCount} outras versões</p> : null}
         </>
       )}
