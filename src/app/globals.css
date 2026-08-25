@@ -45,7 +45,7 @@
   --surface: #1c2127;
   --surface-2: #232a31;
   --surface-grad: #171c22;
-  --border: #2e373f;
+  --border: #4a5560;
   --hairline: rgba(255, 255, 255, 0.06);
   --text: #eef2f4;
   --text-muted: #9aa6b0;
@@ -69,7 +69,7 @@
 }
 
 * {
-  border-color: #2e373f;
+  border-color: #4a5560;
 }
 html * {
   border-color: var(--border);
@@ -98,7 +98,10 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: -1;
   pointer-events: none;
   background:
@@ -118,7 +121,7 @@ html .muted {
   position: relative;
   z-index: 0;
   background: #1c2127;
-  border: 1px solid #2e373f;
+  border: 1px solid #4a5560;
   border-radius: 14px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4), 0 14px 32px -22px rgba(0, 0, 0, 0.9);
 }
@@ -139,7 +142,10 @@ html .card {
 .card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: -1;
   border-radius: 14px;
   pointer-events: none;

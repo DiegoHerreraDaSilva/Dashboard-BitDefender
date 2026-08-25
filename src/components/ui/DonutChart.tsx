@@ -57,7 +57,7 @@ export function DonutChart({ segments, size = 120, strokeWidth = 16, centerLabel
           ))}
       </svg>
       {centerLabel ? (
-        <div className="absolute inset-0 flex items-center justify-center">{centerLabel}</div>
+        <div className="absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">{centerLabel}</div>
       ) : null}
     </div>
   );

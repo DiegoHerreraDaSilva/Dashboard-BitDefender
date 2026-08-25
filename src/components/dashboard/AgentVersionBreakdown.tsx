@@ -53,7 +53,7 @@ export function AgentVersionBreakdown({ state, className }: AgentVersionBreakdow
             </span>
           </p>
           <VerticalBarChart
-            height={130}
+            height={112}
             bars={displayOrder.map((entry) => ({
               label: entry.version,
               value: entry.count,

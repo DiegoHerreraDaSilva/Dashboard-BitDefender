@@ -40,6 +40,13 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
   );
 
   const arcPath = `M ${cx - arcRadius} ${cy} A ${arcRadius} ${arcRadius} 0 0 1 ${cx + arcRadius} ${cy}`;
+  // Real arc length in SVG user units, not the pathLength="100" normalization
+  // trick — confirmed on the TV's browser that pathLength isn't honored,
+  // which made strokeDasharray get interpreted as raw units on the actual
+  // (much longer) path and rendered as a near-empty sliver instead of a
+  // proportional fill.
+  const arcLength = Math.PI * arcRadius;
+  const filledLength = (clamped / 100) * arcLength;
 
   return (
     <svg width={size} height={height} viewBox={`0 0 ${size} ${height}`}>
@@ -71,15 +78,14 @@ export function GaugeChart({ value, color, label, size = 220 }: GaugeChartProps)
           </g>
         );
       })}
-      <path d={arcPath} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={arcWidth} strokeLinecap="butt" pathLength={100} />
+      <path d={arcPath} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth={arcWidth} strokeLinecap="butt" />
       <path
         d={arcPath}
         fill="none"
         stroke={color}
         strokeWidth={arcWidth}
         strokeLinecap="butt"
-        pathLength={100}
-        strokeDasharray={`${clamped} ${100 - clamped}`}
+        strokeDasharray={`${filledLength} ${arcLength - filledLength}`}
       />
       <text x={cx} y={cy - size * 0.02} textAnchor="middle" fontSize={size * 0.2} fontWeight={600} fill={TEXT_COLOR}>
         {Math.round(clamped)}
