@@ -68,15 +68,23 @@ export function classifyManagedEndpoint(
   now: number
 ): ManagedEndpointClassification {
   const status = ((): EndpointStatus => {
-    const malwareStatus = detail.malwareStatus;
-    if (typeof malwareStatus === "object" && malwareStatus !== null) {
-      if ((malwareStatus as RawRecord).infected === true) return "atRisk";
-    }
-
+    // Offline is checked first: a `malwareStatus.infected` flag on a machine
+    // that hasn't phoned home in a while is a stale last-known reading, not a
+    // live threat — and GravityZone's own Control Center "Online/Offline"
+    // widget splits purely on connectivity. Checking infection first (as this
+    // used to) silently pulled offline-but-historically-infected machines out
+    // of the offline bucket, undercounting it against the Control Center's
+    // own numbers (confirmed live: our Offline was short by exactly the
+    // count in "Em risco").
     const lastSeenRaw = detail.lastSeen;
     if (typeof lastSeenRaw === "string") {
       const lastSeen = Date.parse(lastSeenRaw);
       if (!Number.isNaN(lastSeen) && now - lastSeen > offlineThresholdMs) return "offline";
+    }
+
+    const malwareStatus = detail.malwareStatus;
+    if (typeof malwareStatus === "object" && malwareStatus !== null) {
+      if ((malwareStatus as RawRecord).infected === true) return "atRisk";
     }
 
     return "protected";
