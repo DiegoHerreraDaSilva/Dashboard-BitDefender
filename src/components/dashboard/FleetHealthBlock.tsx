@@ -26,12 +26,12 @@ export function FleetHealthBlock({ state, className }: FleetHealthBlockProps) {
     : [];
 
   return (
-    <Card className={`p-6 flex flex-col gap-3 ${className ?? ""}`}>
+    <Card className={`p-6 flex flex-col gap-2 ${className ?? ""}`}>
       <h2 className="text-2xl font-semibold tracking-tight">Saúde dos gerenciados</h2>
       {!summary ? (
         <p className="text-lg muted">Conectando à GravityZone...</p>
       ) : (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-1">
           {rows.map((row) => {
             const Icon = row.Icon;
             const pct = managedCount > 0 ? Math.round((row.value / managedCount) * 100) : 0;
