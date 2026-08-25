@@ -27,13 +27,13 @@ export function TotalEndpointsCard({ state, className }: TotalEndpointsCardProps
       ) : (
         <div className="flex items-center gap-8">
           <DonutChart
-            size={160}
-            strokeWidth={20}
+            size={120}
+            strokeWidth={16}
             segments={[
               { value: summary.managedCount, color: toneColor("ok") },
               { value: summary.unmanagedCount, color: toneColor("warn") },
             ]}
-            centerLabel={<span className="text-4xl font-semibold tabular-nums">{summary.total}</span>}
+            centerLabel={<span className="text-3xl font-semibold tabular-nums">{summary.total}</span>}
           />
           <div className="flex flex-col gap-3 text-base">
             <div className="flex items-center gap-3">
