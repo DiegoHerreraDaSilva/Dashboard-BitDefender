@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /*
  * Schwaben design tokens, trimmed for a passive, always-on TV display on an
@@ -6,6 +8,9 @@
  *  - dark-only (no next-themes toggle — there's no one to click it on a TV)
  *  - tone glow/accent values are static tokens, not color-mix() — color-mix()
  *    only ships on newer engines and there is no way to know the TV's version
+ *  - Tailwind v3, not v4: v4's output wraps everything in @layer (Cascade
+ *    Layers), which this TV's browser doesn't support at all — it silently
+ *    drops the whole stylesheet. v3 compiles to plain flat CSS instead.
  */
 
 :root {
