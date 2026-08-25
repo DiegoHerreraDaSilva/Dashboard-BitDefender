@@ -54,7 +54,7 @@ export function IncidentActivityList({ state, className }: IncidentActivityListP
         <p className="text-lg muted">Nenhum incidente no período.</p>
       ) : (
         <>
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-2">
             {shown.map((entry) => {
               const isRecurring = entry.count >= 2;
               const meta = SEVERITY_META[entry.severity];
