@@ -273,6 +273,22 @@ function worseSeverity(a: IncidentSeverity, b: IncidentSeverity): IncidentSeveri
   return SEVERITY_RANK[b] > SEVERITY_RANK[a] ? b : a;
 }
 
+// `extendedIncident` (Bitdefender's cross-entity correlation engine) doesn't
+// imply "affects many endpoints" — confirmed live on this tenant: every
+// extendedIncident sampled had `details.counters.endpoints === 1` (the
+// correlation was across entity *types* — a domain, an external source —
+// not across machines). `details` never carries a computerName for this
+// incident type, so the specific endpoint can't be named, but the real
+// count is right there in `counters` and should drive the wording instead
+// of an unconditional plural.
+function orgIncidentEndpointLabel(details: RawRecord): string {
+  const counters = typeof details.counters === "object" && details.counters !== null ? (details.counters as RawRecord) : {};
+  const endpointCount = typeof counters.endpoints === "number" ? counters.endpoints : null;
+  if (endpointCount === 1) return "1 endpoint";
+  if (endpointCount !== null) return `${endpointCount} endpoints`;
+  return "Vários endpoints";
+}
+
 function isNoiseSegment(segment: string): boolean {
   return /^[0-9a-f]{5,}$/i.test(segment) || /^\d+$/.test(segment);
 }
@@ -329,7 +345,7 @@ export function classifyIncidentActivity(rawIncidents: RawRecord[]): IncidentAct
       groups.set(`ungrouped-${ungroupedSeq}`, {
         id: String(item.incidentId ?? `incident-${ungroupedSeq}`),
         title,
-        endpointName: isOrgIncident ? "Vários endpoints" : endpointName ?? "Endpoint desconhecido",
+        endpointName: isOrgIncident ? orgIncidentEndpointLabel(details) : endpointName ?? "Endpoint desconhecido",
         severity,
         count: 1,
         firstSeen: created,
