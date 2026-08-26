@@ -62,25 +62,23 @@ function extractAgentVersion(detail: RawRecord): string | null {
   return typeof version === "string" ? version : null;
 }
 
-export function classifyManagedEndpoint(
-  detail: RawRecord,
-  offlineThresholdMs: number,
-  now: number
-): ManagedEndpointClassification {
+export function classifyManagedEndpoint(detail: RawRecord): ManagedEndpointClassification {
   const status = ((): EndpointStatus => {
-    // Offline is checked first: a `malwareStatus.infected` flag on a machine
-    // that hasn't phoned home in a while is a stale last-known reading, not a
-    // live threat — and GravityZone's own Control Center "Online/Offline"
-    // widget splits purely on connectivity. Checking infection first (as this
-    // used to) silently pulled offline-but-historically-infected machines out
-    // of the offline bucket, undercounting it against the Control Center's
-    // own numbers (confirmed live: our Offline was short by exactly the
-    // count in "Em risco").
-    const lastSeenRaw = detail.lastSeen;
-    if (typeof lastSeenRaw === "string") {
-      const lastSeen = Date.parse(lastSeenRaw);
-      if (!Number.isNaN(lastSeen) && now - lastSeen > offlineThresholdMs) return "offline";
-    }
+    // `state` is GravityZone's own connectivity flag (1 = online, 0 =
+    // offline) — confirmed live against the Control Center's own
+    // Online/Offline widget (state===1 count matched exactly). This
+    // replaced an earlier "no contact for N hours" heuristic: `lastSeen`
+    // turned out to be too volatile to threshold reliably (a machine
+    // observed offline for 8.5h was back online minutes later), and any
+    // fixed cutoff either over- or under-counted against the live number
+    // depending on when it was sampled. `state` needs no threshold at all —
+    // it's already GravityZone's own computed answer.
+    //
+    // Checked before the malware flag: an infected machine that's currently
+    // unreachable isn't a live threat you can act on right now, it's a
+    // stale last-known reading — Offline is the more useful/actionable
+    // status for it.
+    if (detail.state !== 1) return "offline";
 
     const malwareStatus = detail.malwareStatus;
     if (typeof malwareStatus === "object" && malwareStatus !== null) {

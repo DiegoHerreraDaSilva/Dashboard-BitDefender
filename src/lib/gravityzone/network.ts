@@ -1,5 +1,5 @@
 import { SnapshotCache } from "@/lib/cache";
-import { cacheTtlSeconds, offlineThresholdMinutes } from "@/lib/config";
+import { cacheTtlSeconds } from "@/lib/config";
 import { callMethod } from "./client";
 import {
   classifyManagedEndpoint,
@@ -113,16 +113,13 @@ async function fetchFleetSummary(): Promise<FleetSummary> {
     }
   }
 
-  const now = Date.now();
-  const offlineThresholdMs = offlineThresholdMinutes * 60_000;
-
   const classifications = await mapWithConcurrency<string, ManagedEndpointClassification>(
     managedIds,
     DETAIL_CONCURRENCY,
     async (id) => {
       try {
         const detail = await callMethod<RawRecord>("network", "getManagedEndpointDetails", { endpointId: id });
-        return classifyManagedEndpoint(detail, offlineThresholdMs, now);
+        return classifyManagedEndpoint(detail);
       } catch {
         // A "managed" endpoint whose detail call still fails is not answering —
         // offline is the safe read; no score/policy/version data to report either.
