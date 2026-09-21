@@ -49,23 +49,27 @@ requisições, mas que um servidor sempre ligado cumpre sem esforço nenhum.
 ```bash
 npm install
 npm run build
-npm run start
+start.bat
 ```
 
 Com `output: "standalone"` no `next.config.ts`, o build gera uma pasta
-`.next/standalone` com tudo que é preciso para rodar (não precisa de
-`node_modules` completo no servidor) — `.next/standalone/server.js` é o
-executável, ele já sobe escutando em todas as interfaces de rede (não só
-`localhost`), então a TV acessa direto pelo IP do servidor na rede interna
-(ex.: `http://192.168.x.x:3000`).
+`.next/standalone` com o essencial para rodar (não precisa de `node_modules`
+completo no servidor) — mas ela sai sem `public/`, `.next/static` e
+`.env.local`, que o Next.js não copia automaticamente para lá. `start.bat`
+copia esses três antes de subir `node server.js`, então é ele quem deve ser
+usado para iniciar o painel, não `npm run start` diretamente. Já sobe
+escutando em todas as interfaces de rede (não só `localhost`), então a TV
+acessa direto pelo IP do servidor na rede interna (ex.:
+`http://192.168.x.x:3000`).
 
 **Para manter rodando permanentemente** (sobrevive a reinício do servidor,
-reinicia sozinho se cair): registre `.next/standalone/server.js` como
-serviço do Windows via [NSSM](https://nssm.cc/) ou como uma tarefa do Task
-Scheduler configurada para rodar na inicialização.
+reinicia sozinho se cair): registre `start.bat` como serviço do Windows via
+[NSSM](https://nssm.cc/) ou como uma tarefa do Task Scheduler configurada
+para rodar na inicialização.
 
 **Para atualizar depois de uma mudança:** `git pull`, `npm install` (se o
-`package.json` mudou), `npm run build`, e reinicie o serviço/processo.
+`package.json` mudou), `npm run build`, e reinicie o serviço/processo
+(`start.bat` de novo).
 
 ## Configurando a TV
 
