@@ -37,52 +37,35 @@ não foi documentado publicamente — a lógica em `src/lib/gravityzone/classify
 3. Ajuste `classify.ts` (e os filtros em `network.ts`) para bater com os campos
    reais retornados.
 
-## Build de produção
+## Deploy no servidor da rede interna
+
+O painel roda como processo Node persistente num servidor da rede interna
+(não mais na Vercel — a hospedagem pública foi abandonada). Isso é, na
+verdade, o cenário ideal para a arquitetura atual: o `SnapshotCache` em
+memória (`src/lib/cache.ts`) foi desenhado desde o início para **um processo
+Node persistente**, premissa que uma função serverless não garante entre
+requisições, mas que um servidor sempre ligado cumpre sem esforço nenhum.
 
 ```bash
+npm install
 npm run build
 npm run start
 ```
 
 Com `output: "standalone"` no `next.config.ts`, o build gera uma pasta
 `.next/standalone` com tudo que é preciso para rodar (não precisa de
-`node_modules` completo no servidor).
+`node_modules` completo no servidor) — `.next/standalone/server.js` é o
+executável, ele já sobe escutando em todas as interfaces de rede (não só
+`localhost`), então a TV acessa direto pelo IP do servidor na rede interna
+(ex.: `http://192.168.x.x:3000`).
 
-## Deploy na Vercel
+**Para manter rodando permanentemente** (sobrevive a reinício do servidor,
+reinicia sozinho se cair): registre `.next/standalone/server.js` como
+serviço do Windows via [NSSM](https://nssm.cc/) ou como uma tarefa do Task
+Scheduler configurada para rodar na inicialização.
 
-O painel está hospedado na Vercel (`vercel` CLI, deploy direto do diretório
-local — não depende de repositório Git). Isso muda uma premissa da
-arquitetura: o `SnapshotCache` em memória (`src/lib/cache.ts`) foi desenhado
-para **um processo Node persistente**; funções serverless da Vercel não
-garantem isso entre requisições. Na prática, com 1 TV atualizando a cada
-`DASHBOARD_REFRESH_SECONDS` (60s), a função tende a ficar "quente" e o cache
-funciona — mas um cold start (baixo tráfego, redeploy, escala) perde o cache e
-refaz a varredura completa da frota (119 dispositivos, até 69 chamadas de
-detalhe), o que pode levar alguns segundos. Não é um problema bloqueante para
-este uso, só um comportamento a monitorar caso a TV pareça "travar" no
-carregamento ocasionalmente.
-
-**Deploy inicial:**
-
-1. `npx vercel login` — precisa de um passo interativo (navegador/e-mail), só
-   funciona num terminal de verdade.
-2. `npx vercel link` — associa esta pasta a um projeto Vercel (cria um novo se
-   ainda não existir).
-3. Configure as variáveis de ambiente do projeto (nunca commitar essas
-   chaves): `npx vercel env add GRAVITYZONE_ACCESS_URL production` e
-   `npx vercel env add GRAVITYZONE_API_KEY production` (cole os valores do seu
-   `.env.local`). As demais variáveis de `.env.local.example` são opcionais —
-   têm default no código.
-4. `npx vercel --prod` — builda e publica. A URL pública fica sem proteção por
-   escolha deliberada (o painel mostra dados internos reais — nome de máquina,
-   infecção, incidentes — então trate a URL como algo a não divulgar/indexar).
-
-**Para atualizar depois de uma mudança:** `npx vercel --prod` de novo.
-
-**Se preferir voltar a rodar como processo persistente** (servidor Windows
-interno, por exemplo, para garantir o cache sem depender de a função ficar
-"quente"): `npm run build` gera `.next/standalone` com um `server.js`
-executável via NSSM ou Task Scheduler, sem depender da Vercel.
+**Para atualizar depois de uma mudança:** `git pull`, `npm install` (se o
+`package.json` mudou), `npm run build`, e reinicie o serviço/processo.
 
 ## Configurando a TV
 
