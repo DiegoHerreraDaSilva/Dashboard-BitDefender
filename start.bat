@@ -19,7 +19,7 @@ echo Iniciando o painel GravityZone...
 echo (feche esta janela ou pressione Ctrl+C para parar o servidor)
 echo.
 
-set PORT=3000
+set PORT=3003
 set HOSTNAME=0.0.0.0
 
 cd ".next\standalone"

@@ -58,9 +58,9 @@ completo no servidor) — mas ela sai sem `public/`, `.next/static` e
 `.env.local`, que o Next.js não copia automaticamente para lá. `start.bat`
 copia esses três antes de subir `node server.js`, então é ele quem deve ser
 usado para iniciar o painel, não `npm run start` diretamente. Já sobe
-escutando em todas as interfaces de rede (não só `localhost`), então a TV
-acessa direto pelo IP do servidor na rede interna (ex.:
-`http://192.168.x.x:3000`).
+escutando em todas as interfaces de rede (não só `localhost`), na porta
+3003 (definida em `start.bat`), então a TV acessa direto pelo IP do
+servidor na rede interna (ex.: `http://192.168.x.x:3003`).
 
 **Para manter rodando permanentemente** (sobrevive a reinício do servidor,
 reinicia sozinho se cair): registre `start.bat` como serviço do Windows via
